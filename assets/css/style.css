@@ -171,6 +171,69 @@ ul { list-style: none; }
   border-bottom: 1px solid rgba(229, 231, 235, 0.3);
 }
 
+/* 其他页面（非首页）的头部样式 - 固定背景，更好的可见性 */
+.site-header.internal-page-header {
+  position: sticky;
+  top: 0;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* 其他页面的导航链接 - 使用深色文字 */
+.site-header.internal-page-header .nav-main a {
+  color: rgba(0, 0, 0, 0.85);
+  text-shadow: none;
+  font-weight: 600;
+}
+
+.site-header.internal-page-header .nav-main a:hover {
+  color: rgba(0, 0, 0, 1);
+  text-shadow: none;
+  transform: translateY(-1px);
+}
+
+.site-header.internal-page-header .nav-main a.active {
+  color: rgba(0, 0, 0, 1);
+  font-weight: 700;
+  text-shadow: none;
+}
+
+/* 其他页面的按钮样式 */
+.site-header.internal-page-header .btn-nav {
+  background: rgba(74, 144, 226, 0.1);
+  color: #4a90e2;
+  border: 2px solid rgba(74, 144, 226, 0.3);
+  text-shadow: none;
+  box-shadow: 0 2px 8px rgba(74, 144, 226, 0.15);
+}
+
+.site-header.internal-page-header .btn-nav:hover {
+  background: #4a90e2;
+  color: white;
+  border-color: #4a90e2;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(74, 144, 226, 0.3);
+}
+
+/* 其他页面导航链接的激活状态指示器 */
+.site-header.internal-page-header .nav-main a.active::after {
+  background: rgba(74, 144, 226, 0.6);
+  box-shadow: 0 0 8px rgba(74, 144, 226, 0.3);
+}
+
+/* 其他页面头部过渡效果 */
+.site-header.internal-page-header {
+  transition: all 0.3s ease;
+}
+
+/* 确保其他页面的 logo 有适当的显示 */
+.site-header.internal-page-header .logo-mark {
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15));
+  opacity: 1;
+}
+
 .header-inner {
   display: flex;
   align-items: center;
@@ -271,22 +334,24 @@ ul { list-style: none; }
   align-items: center; 
   z-index: 1;
   height: 100%;
+  padding: 5px 0;
 }
 
 .logo-mark {
-  width: 180px; 
+  width: 300px; 
   height: auto; 
   max-height: 80px;
   object-fit: contain;
   display: block;
   flex-shrink: 0;
   background: transparent;
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.2));
+  filter: drop-shadow(0 3px 12px rgba(0, 0, 0, 0.3));
   transition: transform 0.3s ease;
 }
 
 .logo-mark:hover {
-  transform: scale(1.05);
+  transform: scale(1.08);
+  filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.4));
 }
 
 .logo-text-main,
@@ -4203,8 +4268,8 @@ ul { list-style: none; }
   }
 
   .logo-mark {
-    width: 160px;
-    max-height: 72px;
+    width: 240px;
+    max-height: 75px;
     background: transparent;
   }
 
@@ -4280,8 +4345,8 @@ ul { list-style: none; }
   }
 
   .logo-mark {
-    width: 140px;
-    max-height: 64px;
+    width: 200px;
+    max-height: 70px;
     background: transparent;
   }
 

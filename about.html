@@ -7,7 +7,10 @@
   <meta name="description" content="专注服务中国制造和外贸企业，提供海外独立站、Google Ads、SEO、内容营销、社交媒体运营等一站式数字营销解决方案，帮助企业获得高质量全球询盘。" />
   
   <!-- Favicon -->
-  <link rel="icon" type="image/webp" href="assets/images/favicon.webp" />
+  <link rel="icon" type="image/webp" sizes="32x32" href="assets/images/favicon.webp" />
+  <link rel="icon" type="image/webp" sizes="64x64" href="assets/images/favicon.webp" />
+  <link rel="icon" type="image/webp" sizes="128x128" href="assets/images/favicon.webp" />
+  <link rel="apple-touch-icon" href="assets/images/favicon.webp" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -23,7 +26,7 @@
 <body>
 <div class="page-wrap">
   <!-- ========== Header ========== -->
-  <header class="site-header">
+  <header class="site-header internal-page-header">
     <div class="container header-inner">
       <a href="index.html" class="logo-wrap">
         <img src="assets/images/logo.png" alt="弘道海外营销" class="logo-mark">
@@ -263,6 +266,18 @@
   updateHeader();
   window.addEventListener('scroll', () => {
     updateHeader();
+  });
+
+  // 为当前页面的导航链接添加 active 类
+  document.addEventListener('DOMContentLoaded', function() {
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const navLinks = document.querySelectorAll('.nav-main a');
+    navLinks.forEach(link => {
+      const linkHref = link.getAttribute('href');
+      if (linkHref === currentPage || (currentPage === 'about.html' && linkHref.includes('about.html'))) {
+        link.classList.add('active');
+      }
+    });
   });
 </script>
 </body>
