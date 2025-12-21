@@ -4451,6 +4451,10 @@ ul { list-style: none; }
     display: none;
   }
 
+  .hero-platforms-showcase {
+    display: none !important;
+  }
+
   .hero-bg-grid {
     background-size: 30px 30px;
   }
