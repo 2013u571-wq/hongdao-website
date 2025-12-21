@@ -454,7 +454,22 @@
             </ul>
           </div>
           <div class="content-right">
-            <img src="assets/images/13年经验.webp" alt="13年外贸增长经验" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+            <picture>
+              <source media="(max-width: 768px)"
+                      srcset="assets/images/about-team-mobile.webp"
+                      type="image/webp">
+
+              <source srcset="assets/images/about-team-desktop.webp"
+                      type="image/webp">
+
+              <img src="assets/images/about-team-desktop.jpg"
+                   alt="弘道网络团队合影"
+                   width="800"
+                   height="520"
+                   loading="lazy"
+                   decoding="async"
+                   style="width:100%;height:100%;object-fit:cover;border-radius:8px;">
+            </picture>
           </div>
         </div>
         
