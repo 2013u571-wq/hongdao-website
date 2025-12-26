@@ -488,8 +488,8 @@
               <p>你不是要更多流量，你要的是精准到会成交的询盘。</p>
             </div>
           </div>
-          <div class="content-right wcu-image-placeholder">
-            <p>精准询盘配图</p>
+          <div class="content-right">
+            <img src="assets/images/询盘表单.webp" alt="精准询盘模型" style="width: 100%; height: auto; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12);">
           </div>
         </div>
 
@@ -509,8 +509,8 @@
               <p>我们关注 ROI，而不是花钱买流量。</p>
             </div>
           </div>
-          <div class="content-right wcu-image-placeholder">
-            <p>一体化方法配图</p>
+          <div class="content-right">
+            <img src="assets/images/一体化方法论.webp" alt="一体化增长方法论" style="width: 100%; height: auto; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12);">
           </div>
         </div>
         
@@ -527,8 +527,8 @@
               <p>客户不是图便宜而选择我们，而是因为我们能创造可持续增长。</p>
             </div>
           </div>
-          <div class="content-right wcu-image-placeholder">
-            <p>结果证明配图</p>
+          <div class="content-right">
+            <img src="assets/images/结果证明.webp" alt="结果证明实力" style="width: 100%; height: auto; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12);">
           </div>
         </div>
       </div>
@@ -773,8 +773,19 @@
             <img src="assets/images/wechat.webp" alt="微信二维码" class="wechat-qrcode">
           </div>
         </div>
-        <form class="contact-form" id="contactForm">
-          <div class="form-row">
+        <form
+          id="contactForm"
+          class="contact-form"
+          method="POST"
+          action="https://formspree.io/f/xqezrddv"
+        >
+  <input type="hidden" name="_redirect" value="https://www.honedao.com/thanks.html">
+  <input type="hidden" name="_subject" value="【官网咨询】新的营销方案询盘">
+  <input type="text" name="_gotcha" style="display:none">
+
+        <input type="hidden" name="source" value="website">
+        <input type="hidden" name="redirect" id="redirectUrl" value="https://www.honedao.com/thanks.html"> 
+        <div class="form-row">
             <div class="form-group">
               <label for="name">姓名 <span class="required">*</span></label>
               <input type="text" id="name" name="name" required placeholder="请输入您的姓名">
@@ -827,7 +838,7 @@
         </div>
         <div class="contact-item">
           <span>邮箱:</span>
-          <a href="mailto:info@hongdaoweb.com">info@honedao.com</a>
+          <a href="mailto:hongdaoo@qq.com">hongdaoo@qq.com</a>
         </div>
         <div class="contact-item">
           <span>地址:</span>
@@ -1145,7 +1156,8 @@
   });
 </script>
 
-  <!-- 表单提交脚本 -->
+  <!-- 表单提交脚本（仅禁用按钮，防止重复点击） -->
   <script src="assets/js/form-submit.js"></script>
+  <script src="assets/js/mobile-menu.js"></script>
 </body>
 </html>

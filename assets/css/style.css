@@ -5007,3 +5007,334 @@ ul { list-style: none; }
 
 }
 
+/* Mobile menu: ensure toggle is clickable */
+
+.nav-toggle{
+
+  position: relative;
+
+  z-index: 9999;
+
+  pointer-events: auto;
+
+}
+
+
+
+/* If header has overlay pseudo elements, don't block clicks */
+
+.site-header::before,
+
+.site-header::after{
+
+  pointer-events: none;
+
+}
+
+
+
+@media (max-width: 768px){
+
+  .nav-main{
+
+    display: none;
+
+    position: absolute;
+
+    top: 100%;
+
+    left: 0;
+
+    right: 0;
+
+    padding: 14px 16px;
+
+    z-index: 5000;
+
+  }
+
+
+
+  .nav-main.is-open{
+
+    display: block;
+
+  }
+
+
+
+  html.nav-open, html.nav-open body{
+
+    overflow: hidden;
+
+  }
+
+}
+
+@media (max-width: 768px){
+
+  .site-header .nav-main{display:none;position:absolute;top:calc(100% + 10px);left:12px;right:12px;padding:12px;border-radius:14px;background:rgba(255,255,255,.98);box-shadow:0 14px 40px rgba(0,0,0,.14);z-index:9999;}
+
+  .site-header .nav-main.is-open{display:block;}
+
+  .site-header .nav-main a{display:block;padding:12px 10px;border-radius:10px;}
+
+  .site-header .nav-main a:active{opacity:.7;}
+
+  .nav-toggle{position:relative;z-index:10000;pointer-events:auto;}
+
+}
+
+/* Mobile nav visibility fix */
+@media (max-width: 768px){
+  .site-header{
+    z-index: 10001;
+    position: relative;
+  }
+  
+  html.nav-open .site-header .nav-main{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 10002;
+    display: block !important;
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  html.nav-open .site-header .nav-main a{
+    color: #111 !important;
+    z-index: 1;
+    position: relative;
+  }
+  
+  .nav-main::before,
+  .nav-main::after{
+    z-index: 0;
+  }
+}
+/* ==========================
+   Mobile Nav – visible fix (nav-open + is-open)
+   ========================== */
+   @media (max-width: 768px){
+
+    .site-header{
+      position: relative;
+      z-index: 100000;
+    }
+  
+    /* Only when menu is open */
+    html.nav-open .site-header .nav-main.is-open{
+      display: block !important;
+      position: fixed !important;
+      top: 72px !important;      /* 需要可调：你的 header 高度 */
+      left: 12px !important;
+      right: 12px !important;
+  
+      background: rgba(255,255,255,.98) !important;
+      border-radius: 18px !important;
+      box-shadow: 0 18px 48px rgba(0,0,0,.18) !important;
+  
+      /* 关键：把“变淡/模糊/位移”全部干掉 */
+      opacity: 1 !important;
+      visibility: visible !important;
+      transform: none !important;
+      filter: none !important;
+      mix-blend-mode: normal !important;
+  
+      z-index: 100001 !important;
+      pointer-events: auto !important;
+    }
+  
+    /* 关键：如果父级 opacity 被设置过，子元素也会一起淡，这里强制子元素不淡 */
+    html.nav-open .site-header .nav-main.is-open *{
+      opacity: 1 !important;
+      filter: none !important;
+      mix-blend-mode: normal !important;
+    }
+  
+    /* 强制链接可见 */
+    html.nav-open .site-header .nav-main.is-open a{
+      display: block !important;
+      padding: 12px 12px !important;
+      border-radius: 12px !important;
+      color: #111 !important;
+      text-shadow: none !important;
+      text-decoration: none !important;
+    }
+
+    /* Fix for internal-page-header pages (about, services, cases) */
+    html.nav-open .site-header.internal-page-header .nav-main.is-open{
+      display: block !important;
+      position: fixed !important;
+      top: 72px !important;
+      left: 12px !important;
+      right: 12px !important;
+      background: rgba(255,255,255,.98) !important;
+      border-radius: 18px !important;
+      box-shadow: 0 18px 48px rgba(0,0,0,.18) !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      transform: none !important;
+      filter: none !important;
+      mix-blend-mode: normal !important;
+      z-index: 100001 !important;
+      pointer-events: auto !important;
+    }
+
+    html.nav-open .site-header.internal-page-header .nav-main.is-open *{
+      opacity: 1 !important;
+      filter: none !important;
+      mix-blend-mode: normal !important;
+    }
+
+    html.nav-open .site-header.internal-page-header .nav-main.is-open a{
+      display: block !important;
+      padding: 12px 12px !important;
+      border-radius: 12px !important;
+      color: #111 !important;
+      text-shadow: none !important;
+      text-decoration: none !important;
+    }
+
+    .site-header.internal-page-header{
+      position: relative;
+      z-index: 100000;
+    }
+  }
+
+/* PC端修复：确保internal-page-header页面的导航菜单正常显示 */
+@media (min-width: 769px) {
+  .site-header.internal-page-header .nav-main {
+    display: flex !important;
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    gap: 8px !important;
+    white-space: nowrap !important;
+  }
+
+  .site-header.internal-page-header .nav-main a {
+    display: inline-block !important;
+    padding: 10px 18px !important;
+    font-size: 16px !important;
+    color: rgba(0, 0, 0, 0.85) !important;
+    text-shadow: none !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    white-space: nowrap !important;
+    border-radius: 0 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+  }
+
+  .site-header.internal-page-header .nav-main a:hover {
+    color: rgba(0, 0, 0, 1) !important;
+    transform: translateY(-1px) !important;
+  }
+
+  .site-header.internal-page-header .nav-main a.active {
+    color: rgba(0, 0, 0, 1) !important;
+    font-weight: 700 !important;
+  }
+
+  .site-header.internal-page-header .nav-main a.active::after {
+    content: '' !important;
+    position: absolute !important;
+    bottom: 4px !important;
+    left: 18px !important;
+    right: 18px !important;
+    height: 2px !important;
+    background: rgba(74, 144, 226, 0.6) !important;
+    border-radius: 2px !important;
+    box-shadow: 0 0 8px rgba(74, 144, 226, 0.3) !important;
+  }
+}
+
+/* ================================
+   Internal Pages – Hero Align Fix (Desktop)
+   ================================ */
+@media (min-width: 769px){
+  /* 仅内页 hero：统一外层留白与居中 */
+  main .page-hero-banner{
+    padding-block: 72px 56px;
+  }
+
+  /* 统一 container 宽度与居中（覆盖不同页面不一致的 container 规则） */
+  main .page-hero-banner > .container{
+    width: min(1200px, 92vw);
+    margin-inline: auto;
+  }
+
+  /* 你的浅色大圆角背景大概率在 container 或其第一层子元素上：
+     统一让"承载内容的那一层"居中并限制最大宽度 */
+  main .page-hero-banner > .container,
+  main .page-hero-banner > .container > *{
+    margin-inline: auto;
+  }
+
+  /* 内容最大宽度 + 标题整体居中（避免某些页面继承 left 对齐造成"错位感"） */
+  main .page-hero-banner > .container > *{
+    max-width: 1100px;
+    text-align: center;
+  }
+
+  /* 如果某些页面给 hero 背景层做了偏移（left/transform），这里兜底纠偏 */
+  main .page-hero-banner::before,
+  main .page-hero-banner::after{
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+/* ================================
+   Internal Pages – Hero Banner Height Fix (Desktop only)
+   ================================ */
+@media (min-width: 769px){
+  /* 只针对内页 Banner（你项目里是 .page-hero-banner） */
+  .page-hero-banner{
+    height: auto !important;
+    min-height: 0 !important;   /* 干掉 100vh 之类 */
+    padding-top: 72px !important;
+    padding-bottom: 56px !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* 如果 inner / content 被写死高度，也兜底 */
+  .page-hero-banner .page-hero-banner-inner,
+  .page-hero-banner .page-hero-inner,
+  .page-hero-banner .page-hero-content,
+  .page-hero-banner .page-hero-wrap{
+    height: auto !important;
+    min-height: 0 !important;
+  }
+}
+
+/* ================================
+   Page Hero Banner – Full Width Background Fix
+   ================================ */
+.page-hero-banner {
+  width: 100%;
+  background-color: #f0f4f8;
+  position: relative;
+}
+
+/* 确保内部 container 背景透明，让外层背景显示 */
+.page-hero-banner > .container {
+  background-color: transparent !important;
+}
+
+/* 保持内容居中和样式 */
+.page-hero-banner .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 20px;
+}
+  
