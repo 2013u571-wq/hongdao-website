@@ -3,9 +3,9 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!form) return;
 
   const btn = form.querySelector('button[type="submit"]');
+  if (!btn) return;
 
   form.addEventListener('submit', () => {
-    if (!btn) return;
     btn.disabled = true;
     btn.textContent = '提交中…';
   });
