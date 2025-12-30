@@ -1157,39 +1157,52 @@
 
   <!-- 获取用户 IP 和地理位置 -->
   <script>
-    // 使用免费的 ipapi.co 服务获取 IP 和地理位置
-    fetch('https://ipapi.co/json/')
-      .then(response => response.json())
-      .then(data => {
-        const ipField = document.getElementById('user_ip');
-        const locationField = document.getElementById('user_location');
-        
-        if (ipField && data.ip) {
-          ipField.value = data.ip;
-        }
-        
-        if (locationField) {
-          // 组合城市和国家信息
-          const locationParts = [];
-          if (data.city) locationParts.push(data.city);
-          if (data.region) locationParts.push(data.region);
-          if (data.country_name) locationParts.push(data.country_name);
-          locationField.value = locationParts.join(', ') || '';
-        }
-      })
-      .catch(err => {
-        console.error('获取地理位置失败:', err);
-        // 如果 ipapi.co 失败，尝试备用 API
-        fetch('https://api.ipify.org?format=json')
-          .then(response => response.json())
+    // 使用 ipapi.co 获取 IP 和地理位置信息
+    // 确保脚本执行失败时不会影响表单的正常提交
+    (function() {
+      try {
+        fetch('https://ipapi.co/json/')
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.json();
+          })
           .then(data => {
-            const ipField = document.getElementById('user_ip');
-            if (ipField && data.ip) {
-              ipField.value = data.ip;
+            try {
+              const ipField = document.getElementById('user_ip');
+              const locationField = document.getElementById('user_location');
+              
+              // 填充 IP 地址
+              if (ipField && data.ip) {
+                ipField.value = data.ip;
+              }
+              
+              // 填充位置信息：country_name + city
+              if (locationField) {
+                const locationParts = [];
+                if (data.country_name) {
+                  locationParts.push(data.country_name);
+                }
+                if (data.city) {
+                  locationParts.push(data.city);
+                }
+                locationField.value = locationParts.join(', ') || '';
+              }
+            } catch (error) {
+              // 静默处理错误，不影响表单提交
+              console.warn('填充字段时出错:', error);
             }
           })
-          .catch(error => console.error('获取 IP 失败:', error));
-      });
+          .catch(err => {
+            // 静默处理错误，不影响表单提交
+            console.warn('获取地理位置失败:', err);
+          });
+      } catch (error) {
+        // 静默处理错误，确保不影响表单提交
+        console.warn('初始化地理位置获取失败:', error);
+      }
+    })();
   </script>
 
   <!-- 表单提交脚本（仅禁用按钮，防止重复点击） -->
