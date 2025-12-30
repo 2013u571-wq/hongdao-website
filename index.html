@@ -781,7 +781,9 @@
           class="contact-form"
         >
           <input type="hidden" name="redirect" value="https://www.honedao.com/thanks.html">
-          <input type="hidden" name="source" value="website"> 
+          <input type="hidden" name="source" value="website">
+          <input type="hidden" name="user_ip" id="user_ip">
+          <input type="hidden" name="user_location" id="user_location">
         <div class="form-row">
             <div class="form-group">
               <label for="name">姓名 <span class="required">*</span></label>
@@ -1152,6 +1154,43 @@
     });
   });
 </script>
+
+  <!-- 获取用户 IP 和地理位置 -->
+  <script>
+    // 使用免费的 ipapi.co 服务获取 IP 和地理位置
+    fetch('https://ipapi.co/json/')
+      .then(response => response.json())
+      .then(data => {
+        const ipField = document.getElementById('user_ip');
+        const locationField = document.getElementById('user_location');
+        
+        if (ipField && data.ip) {
+          ipField.value = data.ip;
+        }
+        
+        if (locationField) {
+          // 组合城市和国家信息
+          const locationParts = [];
+          if (data.city) locationParts.push(data.city);
+          if (data.region) locationParts.push(data.region);
+          if (data.country_name) locationParts.push(data.country_name);
+          locationField.value = locationParts.join(', ') || '';
+        }
+      })
+      .catch(err => {
+        console.error('获取地理位置失败:', err);
+        // 如果 ipapi.co 失败，尝试备用 API
+        fetch('https://api.ipify.org?format=json')
+          .then(response => response.json())
+          .then(data => {
+            const ipField = document.getElementById('user_ip');
+            if (ipField && data.ip) {
+              ipField.value = data.ip;
+            }
+          })
+          .catch(error => console.error('获取 IP 失败:', error));
+      });
+  </script>
 
   <!-- 表单提交脚本（仅禁用按钮，防止重复点击） -->
   <script src="assets/js/form-submit.js"></script>
