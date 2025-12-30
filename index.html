@@ -775,7 +775,6 @@
         </div>
         <form
           id="contactForm"
-          method="POST"
           class="contact-form"
         >
           <input type="hidden" name="source" value="website">
@@ -1182,35 +1181,28 @@
 
     // 拦截表单提交
     document.getElementById('contactForm').addEventListener('submit', function(e) {
-      e.preventDefault(); // 确保绝对不会发生默认的页面跳转
-      
+      // 1. 立即阻止浏览器默认跳转行为
+      e.preventDefault(); 
+
       const btn = document.getElementById('submitBtn');
-      const scriptUrl = 'https://script.google.com/macros/s/AKfycbwpD_RbT_Mf6MHCSzD5XLnQjUzA2W4E8RwpMXSERINtVKVrXYUnl6oIa4JPzKkIHGqb/exec';
-      
-      // 验证 IP 数据是否已填充
-      const ipField = document.getElementById('user_ip');
-      const locationField = document.getElementById('user_location');
-      
-      // 如果 IP 数据未填充，设置默认值
-      if (!ipField.value || ipField.value === '' || ipField.value === 'N/A') {
-        if (ipField) ipField.value = 'N/A';
-      }
-      if (!locationField.value || locationField.value === '' || locationField.value === 'N/A') {
-        if (locationField) locationField.value = 'N/A';
-      }
-      
       btn.disabled = true;
       btn.innerText = "提交中...";
 
-      // 使用 fetch 异步发送数据
+      const formData = new FormData(this);
+      const scriptUrl = 'https://script.google.com/macros/s/AKfycbwpD_RbT_Mf6MHCSzD5XLnQjUzA2W4E8RwpMXSERINtVKVrXYUnl6oIa4JPzKkIHGqb/exec';
+
+      // 2. 在后台静默发送数据，使用 no-cors 模式避免跨域报错拦截
       fetch(scriptUrl, {
         method: 'POST',
-        mode: 'no-cors',
-        body: new FormData(this)
+        mode: 'no-cors', 
+        body: formData
       });
-      
-      // 最关键：在 fetch 执行后立即跳转，不等待回调
-      window.location.href = 'https://www.honedao.com/thanks.html';
+
+      // 3. 核心修复：无需等待响应，直接在本地执行页面跳转
+      // 延迟 200ms 确保请求已进入网络队列
+      setTimeout(function() {
+        window.location.href = 'https://www.honedao.com/thanks.html';
+      }, 200);
     });
   </script>
 
