@@ -775,12 +775,9 @@
         </div>
         <form
           id="contactForm"
-          name="contact"
           method="POST"
-          action="https://script.google.com/macros/s/AKfycbwpD_RbT_Mf6MHCSzD5XLnQjUzA2W4E8RwpMXSERINtVKVrXYUnl6oIa4JPzKkIHGqb/exec"
           class="contact-form"
         >
-          <input type="hidden" name="redirect" value="https://www.honedao.com/thanks.html">
           <input type="hidden" name="source" value="website">
           <input type="hidden" name="user_ip" id="user_ip">
           <input type="hidden" name="user_location" id="user_location">
@@ -802,7 +799,7 @@
             <label for="message">项目需求（选填）</label>
             <textarea id="message" name="message" rows="4" placeholder="请简要描述您的产品、目标市场等信息"></textarea>
           </div>
-          <button type="submit" class="btn btn-primary btn-submit">提交咨询</button>
+          <button type="submit" id="submitBtn" class="btn btn-primary btn-submit">提交咨询</button>
         </form>
       </div>
     </div>
@@ -1155,58 +1152,80 @@
   });
 </script>
 
-  <!-- 获取用户 IP 和地理位置 -->
+  <!-- 获取用户 IP 和地理位置，以及表单异步提交 -->
   <script>
-    // 使用 ipapi.co 获取 IP 和地理位置信息
-    // 确保脚本执行失败时不会影响表单的正常提交
-    (function() {
-      try {
-        fetch('https://ipapi.co/json/')
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('Network response was not ok');
-            }
-            return response.json();
-          })
-          .then(data => {
-            try {
-              const ipField = document.getElementById('user_ip');
-              const locationField = document.getElementById('user_location');
-              
-              // 填充 IP 地址
-              if (ipField && data.ip) {
-                ipField.value = data.ip;
-              }
-              
-              // 填充位置信息：country_name + city
-              if (locationField) {
-                const locationParts = [];
-                if (data.country_name) {
-                  locationParts.push(data.country_name);
-                }
-                if (data.city) {
-                  locationParts.push(data.city);
-                }
-                locationField.value = locationParts.join(', ') || '';
-              }
-            } catch (error) {
-              // 静默处理错误，不影响表单提交
-              console.warn('填充字段时出错:', error);
-            }
-          })
-          .catch(err => {
-            // 静默处理错误，不影响表单提交
-            console.warn('获取地理位置失败:', err);
-          });
-      } catch (error) {
-        // 静默处理错误，确保不影响表单提交
-        console.warn('初始化地理位置获取失败:', error);
+    // 页面加载时预先获取 IP 和位置
+    document.addEventListener('DOMContentLoaded', function() {
+      fetch('https://ipapi.co/json/')
+        .then(res => res.json())
+        .then(data => {
+          const ipField = document.getElementById('user_ip');
+          const locationField = document.getElementById('user_location');
+          
+          if (ipField) {
+            ipField.value = data.ip || 'N/A';
+          }
+          
+          if (locationField) {
+            locationField.value = (data.country_name || '') + ' ' + (data.city || '');
+          }
+        })
+        .catch(e => {
+          console.error("IP logic error", e);
+          // 如果获取失败，设置默认值
+          const ipField = document.getElementById('user_ip');
+          const locationField = document.getElementById('user_location');
+          if (ipField) ipField.value = 'N/A';
+          if (locationField) locationField.value = 'N/A';
+        });
+    });
+
+    // 拦截表单提交
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault(); // 阻止默认提交，避免跳转到 Google 域名
+      
+      const btn = document.getElementById('submitBtn');
+      const scriptUrl = 'https://script.google.com/macros/s/AKfycbwpD_RbT_Mf6MHCSzD5XLnQjUzA2W4E8RwpMXSERINtVKVrXYUnl6oIa4JPzKkIHGqb/exec';
+      
+      // 验证 IP 数据是否已填充
+      const ipField = document.getElementById('user_ip');
+      const locationField = document.getElementById('user_location');
+      
+      // 如果 IP 数据未填充，尝试再次获取（但不超过 2 秒）
+      if (!ipField.value || ipField.value === '' || ipField.value === 'N/A') {
+        console.warn('IP 数据未填充，使用默认值');
+        if (ipField) ipField.value = 'N/A';
       }
-    })();
+      if (!locationField.value || locationField.value === '' || locationField.value === 'N/A') {
+        console.warn('位置数据未填充，使用默认值');
+        if (locationField) locationField.value = 'N/A';
+      }
+      
+      btn.disabled = true;
+      btn.innerText = "提交中...";
+
+      // 使用 fetch 异步发送数据
+      fetch(scriptUrl, {
+        method: 'POST',
+        mode: 'no-cors', // 关键：Google Apps Script 需要 no-cors 模式以兼容特殊重定向机制
+        body: new FormData(this)
+      })
+      .then(() => {
+        // 请求发出后立即执行前端跳转，不等待响应
+        window.location.href = 'https://www.honedao.com/thanks.html';
+      })
+      .catch(() => {
+        // 即使报错也强制跳转，确保用户体验
+        window.location.href = 'https://www.honedao.com/thanks.html';
+      });
+      
+      // 保险兜底：如果 2 秒后还没跳转，强制执行
+      setTimeout(() => {
+        window.location.href = 'https://www.honedao.com/thanks.html';
+      }, 2000);
+    });
   </script>
 
-  <!-- 表单提交脚本（仅禁用按钮，防止重复点击） -->
-  <script src="assets/js/form-submit.js"></script>
   <script src="assets/js/mobile-menu.js"></script>
 </body>
 </html>
