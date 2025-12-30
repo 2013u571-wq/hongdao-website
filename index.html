@@ -1182,7 +1182,7 @@
 
     // 拦截表单提交
     document.getElementById('contactForm').addEventListener('submit', function(e) {
-      e.preventDefault(); // 阻止默认提交，避免跳转到 Google 域名
+      e.preventDefault(); // 确保绝对不会发生默认的页面跳转
       
       const btn = document.getElementById('submitBtn');
       const scriptUrl = 'https://script.google.com/macros/s/AKfycbwpD_RbT_Mf6MHCSzD5XLnQjUzA2W4E8RwpMXSERINtVKVrXYUnl6oIa4JPzKkIHGqb/exec';
@@ -1191,13 +1191,11 @@
       const ipField = document.getElementById('user_ip');
       const locationField = document.getElementById('user_location');
       
-      // 如果 IP 数据未填充，尝试再次获取（但不超过 2 秒）
+      // 如果 IP 数据未填充，设置默认值
       if (!ipField.value || ipField.value === '' || ipField.value === 'N/A') {
-        console.warn('IP 数据未填充，使用默认值');
         if (ipField) ipField.value = 'N/A';
       }
       if (!locationField.value || locationField.value === '' || locationField.value === 'N/A') {
-        console.warn('位置数据未填充，使用默认值');
         if (locationField) locationField.value = 'N/A';
       }
       
@@ -1207,22 +1205,12 @@
       // 使用 fetch 异步发送数据
       fetch(scriptUrl, {
         method: 'POST',
-        mode: 'no-cors', // 关键：Google Apps Script 需要 no-cors 模式以兼容特殊重定向机制
+        mode: 'no-cors',
         body: new FormData(this)
-      })
-      .then(() => {
-        // 请求发出后立即执行前端跳转，不等待响应
-        window.location.href = 'https://www.honedao.com/thanks.html';
-      })
-      .catch(() => {
-        // 即使报错也强制跳转，确保用户体验
-        window.location.href = 'https://www.honedao.com/thanks.html';
       });
       
-      // 保险兜底：如果 2 秒后还没跳转，强制执行
-      setTimeout(() => {
-        window.location.href = 'https://www.honedao.com/thanks.html';
-      }, 2000);
+      // 最关键：在 fetch 执行后立即跳转，不等待回调
+      window.location.href = 'https://www.honedao.com/thanks.html';
     });
   </script>
 
